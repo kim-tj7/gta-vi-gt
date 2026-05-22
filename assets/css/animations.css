@@ -1,0 +1,231 @@
+/* ==========================================================================
+   animations.css — Widget de animaciones y efectos visuales
+   Proyecto: GTA-VI-GT Landing Page
+   Descripción: Animaciones avanzadas, efectos de partículas y transiciones
+                cinematográficas para la landing page.
+
+   NOTA: Este archivo es opcional. Impórtalo en index.html DESPUÉS de style.css
+   solo si necesitas las animaciones adicionales para rendimiento ligero.
+   ========================================================================== */
+
+/* ==========================================================================
+   EFECTO GLITCH — Texto con falla digital
+   Uso: <h1 class="glitch" data-text="GTA VI">GTA VI</h1>
+   ========================================================================== */
+
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  color: var(--color-accent-2);
+  animation: glitch-1 2.5s infinite linear alternate-reverse;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  transform: translate(-2px, 0);
+}
+
+.glitch::after {
+  color: var(--color-accent);
+  animation: glitch-2 2.5s infinite linear alternate-reverse;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  transform: translate(2px, 0);
+}
+
+@keyframes glitch-1 {
+  0%   { transform: translate(0); }
+  20%  { transform: translate(-2px, 1px); }
+  40%  { transform: translate(2px, -1px); }
+  60%  { transform: translate(0); }
+  80%  { transform: translate(-1px, 2px); }
+  100% { transform: translate(1px, -1px); }
+}
+
+@keyframes glitch-2 {
+  0%   { transform: translate(0); }
+  20%  { transform: translate(2px, -1px); }
+  40%  { transform: translate(-2px, 1px); }
+  60%  { transform: translate(0); }
+  80%  { transform: translate(1px, -2px); }
+  100% { transform: translate(-1px, 1px); }
+}
+
+/* ==========================================================================
+   EFECTO TYPEWRITER — Texto que se escribe solo
+   Uso: <span class="typewriter">GAME ON.</span>
+   Requiere definir --tw-chars como la longitud del texto en JS
+   ========================================================================== */
+
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid var(--color-accent);
+  white-space: nowrap;
+  animation:
+    typing 2.5s steps(30, end) forwards,
+    blink-caret 0.75s step-end infinite;
+  width: 0;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50%       { border-color: var(--color-accent); }
+}
+
+/* ==========================================================================
+   EFECTO NEON FLICKER — Parpadeo de neón
+   Uso: <span class="neon-text">VICE CITY</span>
+   ========================================================================== */
+
+.neon-text {
+  color: var(--color-accent);
+  animation: neon-flicker 3s infinite;
+}
+
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow:
+      0 0 10px var(--color-accent),
+      0 0 20px var(--color-accent),
+      0 0 40px var(--color-accent),
+      0 0 80px var(--color-accent);
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+/* ==========================================================================
+   PARALLAX PLACEHOLDER
+   TODO: implementar con JavaScript en main.js usando requestAnimationFrame
+   Uso: <div class="parallax" data-speed="0.3">...</div>
+   ========================================================================== */
+
+.parallax {
+  will-change: transform;
+  /* La transformación se aplica desde JS */
+}
+
+/* ==========================================================================
+   CONTADOR ANIMADO
+   Uso: <span class="count-up" data-target="1000000">0</span>
+   TODO: implementar lógica de conteo en main.js con IntersectionObserver
+   ========================================================================== */
+
+.count-up {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  color: var(--color-accent);
+  display: inline-block;
+}
+
+/* ==========================================================================
+   PROGRESS BAR ANIMADA
+   Uso: <div class="progress-bar" data-progress="75"></div>
+   TODO: animar con JS al entrar en viewport
+   ========================================================================== */
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--color-surface-alt);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2));
+  border-radius: 100px;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1s ease;
+}
+
+.progress-bar__fill.is-animated {
+  transform: scaleX(1);
+}
+
+/* ==========================================================================
+   REVEAL CARDS — Efecto de entrada escalonada
+   Clase aplicada automáticamente por el observer en main.js
+   ========================================================================== */
+
+.stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.stagger-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Delays escalonados para hijos */
+.stagger-container .stagger-item:nth-child(1) { transition-delay: 0.05s; }
+.stagger-container .stagger-item:nth-child(2) { transition-delay: 0.10s; }
+.stagger-container .stagger-item:nth-child(3) { transition-delay: 0.15s; }
+.stagger-container .stagger-item:nth-child(4) { transition-delay: 0.20s; }
+.stagger-container .stagger-item:nth-child(5) { transition-delay: 0.25s; }
+.stagger-container .stagger-item:nth-child(6) { transition-delay: 0.30s; }
+
+/* ==========================================================================
+   SPINNER DE CARGA
+   Uso: <div class="loader" aria-label="Cargando..."></div>
+   ========================================================================== */
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   TOAST / NOTIFICACIÓN
+   TODO: Crear y destruir dinámicamente con JS
+   ========================================================================== */
+
+.toast {
+  position: fixed;
+  bottom: var(--space-lg);
+  right: var(--space-lg);
+  z-index: 9999;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-accent);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  animation: slideInRight 0.3s ease;
+  max-width: 360px;
+}
+
+.toast--success { border-left-color: #00e676; }
+.toast--error   { border-left-color: var(--color-accent); }
+.toast--info    { border-left-color: var(--color-accent-2); }
+
+@keyframes slideInRight {
+  from { transform: translateX(120%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
